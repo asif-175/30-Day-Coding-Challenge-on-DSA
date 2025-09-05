@@ -1,0 +1,20 @@
+class Solution(object):
+    def swapPairs(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        # Base case: if less than two nodes, return head
+        if not head or not head.next:
+            return head
+
+        # Nodes to be swapped
+        first = head
+        second = head.next
+
+        # Recursively swap the rest
+        first.next = self.swapPairs(second.next)
+        second.next = first
+
+        # Return new head
+        return second
