@@ -1,0 +1,35 @@
+class Solution:
+    def cleanRoom(self, robot: 'Robot') -> None:
+        # Set to store visited cells
+        visited = set()
+        
+        # Directions in order: up, right, down, left
+        directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+        
+        def go_back():
+            # Move the robot back to the previous cell and restore direction
+            robot.turnLeft()
+            robot.turnLeft()
+            robot.move()
+            robot.turnLeft()
+            robot.turnLeft()
+        
+        def dfs(x, y, d):
+            visited.add((x, y))
+            robot.clean()
+            
+            # Explore all four directions
+            for i in range(4):
+                new_d = (d + i) % 4
+                dx, dy = directions[new_d]
+                nx, ny = x + dx, y + dy
+                
+                if (nx, ny) not in visited and robot.move():
+                    dfs(nx, ny, new_d)
+                    go_back()
+                
+                # Turn the robot right for the next direction
+                robot.turnRight()
+        
+        # Start DFS from position (0, 0) and facing up (direction 0)
+        dfs(0, 0, 0)
