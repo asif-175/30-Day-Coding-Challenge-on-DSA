@@ -1,0 +1,23 @@
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, k):
+        """
+        :type n: int
+        :type flights: List[List[int]]
+        :type src: int
+        :type dst: int
+        :type k: int
+        :rtype: int
+        """
+        # Initialize distances with infinity
+        prices = [float('inf')] * n
+        prices[src] = 0
+
+        # Relax edges up to k + 1 times (k stops means k+1 edges)
+        for i in range(k + 1):
+            temp = prices[:]
+            for u, v, cost in flights:
+                if prices[u] != float('inf') and prices[u] + cost < temp[v]:
+                    temp[v] = prices[u] + cost
+            prices = temp
+
+        return -1 if prices[dst] == float('inf') else prices[dst]
